@@ -13,7 +13,9 @@ import EditProduct from './pages/products/EditProduct';
 import CustomerList from './pages/customers/CustomerList';
 import AddCustomer from './pages/customers/AddCustomer';
 import EditCustomer from './pages/customers/EditCustomer';
+import SalesList from './pages/sales/SalesList';
 import CreateSale from './pages/sales/CreateSale';
+import { Toaster } from 'react-hot-toast';
 
 function AppRoutes() {
   return (
@@ -28,13 +30,17 @@ function AppRoutes() {
           
           <Route element={<PrivateRoute allowedRoles={['Admin', 'Manager', 'Employee']} />}>
             <Route path="products" element={<ProductList />} />
-            <Route path="customers" element={<CustomerList />} />
-            <Route path="sales" element={<CreateSale />} />
+            <Route path="sales" element={<SalesList />} />
+            <Route path="sales/add" element={<CreateSale />} />
           </Route>
 
           <Route element={<PrivateRoute allowedRoles={['Admin', 'Manager']} />}>
             <Route path="products/add" element={<AddProduct />} />
             <Route path="products/edit/:id" element={<EditProduct />} />
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
+            <Route path="customers" element={<CustomerList />} />
             <Route path="customers/add" element={<AddCustomer />} />
             <Route path="customers/edit/:id" element={<EditCustomer />} />
           </Route>
@@ -50,6 +56,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
         <AppRoutes />
       </BrowserRouter>
     </Provider>

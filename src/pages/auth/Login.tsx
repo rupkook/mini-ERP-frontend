@@ -34,14 +34,14 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F9F6] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F6F8] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-10 px-8 shadow-sm border border-slate-200 sm:rounded-2xl">
+        <div className="bg-white py-10 px-8 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-100 sm:rounded-3xl">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4 border border-green-100">
-              <Lock className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-4 border border-purple-100">
+              <Lock className="w-8 h-8 text-purple-600" />
             </div>
-            <h2 className="text-2xl font-bold text-[#0A2518]">
+            <h2 className="text-2xl font-bold text-slate-900">
               Admin Access
             </h2>
             <p className="text-sm text-slate-500 mt-2 text-center">
@@ -49,60 +49,55 @@ export default function Login() {
             </p>
           </div>
 
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm text-center">
+              <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm text-center border border-red-100">
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-semibold text-[#0A2518] mb-2">Email Address</label>
-              <div>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input-field"
-                  placeholder="admin@erp.com"
-                />
-              </div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input-field"
+                placeholder="admin@erp.com"
+              />
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-semibold text-[#0A2518]">Password</label>
-                <a href="#" className="text-sm font-medium text-orange-500 hover:text-orange-600">Forgot?</a>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="block text-sm font-semibold text-slate-700">Password</label>
+                <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-700">Forgot?</a>
               </div>
-              <div className="relative">
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input-field"
-                  placeholder="••••••••"
-                />
-              </div>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field"
+                placeholder="••••••••"
+              />
             </div>
 
             <div className="flex items-center">
-              <input type="checkbox" className="h-4 w-4 text-orange-500 border-slate-300 rounded focus:ring-orange-500" />
+              <input type="checkbox" className="h-4 w-4 text-purple-600 border-slate-300 rounded focus:ring-purple-500" />
               <label className="ml-2 block text-sm text-slate-600">Remember me</label>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                className="w-full flex justify-center py-3 px-4 rounded-xl text-sm font-semibold text-white bg-black hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors disabled:opacity-50"
               >
                 {loading ? 'Signing in...' : 'Sign In →'}
               </button>
             </div>
             
-            <div className="text-sm text-slate-500 text-center mt-4">
+            <div className="text-xs text-slate-400 text-center mt-4 leading-relaxed">
               Demo Credentials: <br/>
               admin@erp.com / admin <br/>
               manager@erp.com / admin <br/>
