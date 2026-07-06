@@ -12,10 +12,10 @@ export default function Pagination({
   page,
   totalPages,
   total = 0,
-  limit = 15,
+  limit = 10,
   onPageChange,
 }: PaginationProps) {
-  if (totalPages <= 1) return null;
+  if (total === 0) return null;
 
   return (
     <div className="px-6 py-4 border-t border-slate-100 flex justify-between items-center bg-white">

@@ -124,7 +124,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-4 flex-1 overflow-auto pr-2">
-              {stats?.lowStockProducts?.length > 0 ? stats.lowStockProducts.slice(0, 3).map((product: any) => (
+              {stats?.lowStockProducts?.length > 0 ? stats.lowStockProducts.slice(0, 2).map((product: any) => (
                 <div key={product._id || product.id} className="p-3 rounded-xl border border-slate-100 bg-[#F8F9FA]">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="text-sm font-bold text-slate-800 line-clamp-1">{product.name}</h4>
@@ -153,7 +153,7 @@ export default function Dashboard() {
               )}
             </div>
             
-            {stats?.lowStockProducts?.length > 3 && (
+            {stats?.lowStockProducts?.length > 2 && (
               <button 
                 onClick={() => navigate('/products')}
                 className="mt-4 w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 text-sm font-medium rounded-xl transition-colors border border-slate-100"
@@ -176,7 +176,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-4 flex-1 overflow-auto pr-2">
-              {stats?.highStockProducts?.length > 0 ? stats.highStockProducts.slice(0, 3).map((product: any) => (
+              {stats?.highStockProducts?.length > 0 ? stats.highStockProducts.slice(0, 2).map((product: any) => (
                 <div key={product._id || product.id} className="p-3 rounded-xl border border-slate-100 bg-[#F8F9FA]">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="text-sm font-bold text-slate-800 line-clamp-1">{product.name}</h4>

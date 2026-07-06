@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 export default function SalesList() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const limit = 15;
+  const limit = 10;
 
   const { data, isLoading } = useQuery({
     queryKey: ['sales', page],

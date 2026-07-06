@@ -18,7 +18,7 @@ export default function CustomerList() {
     queryKey: ['customers', searchTerm, page],
     queryFn: async () => {
       const res = await api.get('/customers', {
-        params: { search: searchTerm, page, limit: 15 }
+        params: { search: searchTerm, page, limit: 10 }
       });
       return {
         data: res.data.data,
@@ -104,7 +104,7 @@ export default function CustomerList() {
         page={page}
         totalPages={customers?.totalPages || 1}
         total={customers?.total || 0}
-        limit={15}
+        limit={10}
         onPageChange={setPage}
       />
     </div>

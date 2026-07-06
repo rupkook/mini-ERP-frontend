@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -7,7 +7,7 @@ import api from '../../lib/api';
 export default function AddProduct() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     sku: '',
@@ -17,6 +17,13 @@ export default function AddProduct() {
     stockQuantity: ''
   });
   const [image, setImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      sku: `PRD-${Math.floor(100000 + Math.random() * 900000)}`
+    }));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

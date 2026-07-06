@@ -29,7 +29,7 @@ export default function ProductList() {
     queryKey: ['products', searchTerm, page],
     queryFn: async () => {
       const res = await api.get('/products', {
-        params: { search: searchTerm, page, limit: 15 }
+        params: { search: searchTerm, page, limit: 10 }
       });
       return {
         data: res.data.data,
@@ -137,7 +137,7 @@ export default function ProductList() {
         page={page}
         totalPages={products?.totalPages || 1}
         total={products?.total || 0}
-        limit={15}
+        limit={10}
         onPageChange={setPage}
       />
     </div>

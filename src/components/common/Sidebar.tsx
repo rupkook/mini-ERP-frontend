@@ -27,10 +27,9 @@ export default function Sidebar() {
         </div>
         <div>
           <h1 className="text-sm font-bold text-slate-900 leading-tight">Mini ERP</h1>
-          <p className="text-[11px] text-slate-500">Team Workspace</p>
         </div>
       </div>
-      
+
       <div className="px-4 mb-3">
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Navigation</p>
       </div>
@@ -43,11 +42,10 @@ export default function Sidebar() {
             <Link
               key={item.name}
               to={item.path}
-              className={`flex items-center px-4 py-2.5 rounded-xl transition-all duration-200 ${
-                isActive
+              className={`flex items-center px-4 py-2.5 rounded-xl transition-all duration-200 ${isActive
                   ? 'bg-white shadow-sm text-slate-900 font-semibold'
                   : 'text-slate-500 hover:text-slate-900 hover:bg-black/5'
-              }`}
+                }`}
             >
               <Icon className={`w-4 h-4 mr-3 ${isActive ? 'text-purple-600' : 'text-slate-400'}`} />
               <span className="text-sm">{item.name}</span>

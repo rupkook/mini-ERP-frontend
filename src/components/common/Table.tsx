@@ -28,7 +28,7 @@ export default function Table({
   page = 1,
   totalPages = 1,
   total = 0,
-  limit = 15,
+  limit = 10,
   onPageChange,
 }: TableProps) {
   const alignClass = (align?: string) => {
