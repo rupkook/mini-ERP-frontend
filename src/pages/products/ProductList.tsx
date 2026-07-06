@@ -65,7 +65,7 @@ export default function ProductList() {
       key: 'productImage',
       label: 'Image',
       render: (_: any, row: Product) => (
-        <img src={`${API_BASE_URL}${row.productImage}`} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-slate-100" />
+        <img src={row.productImage?.startsWith('http') ? row.productImage : `${API_BASE_URL}${row.productImage}`} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-slate-100" />
       ),
     },
     {
