@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Eye } from 'lucide-react';
 import { useAppSelector } from '../../store/hooks';
 import toast from 'react-hot-toast';
 import api, { API_BASE_URL } from '../../lib/api';
 import Table from '../../components/common/Table';
+import Modal from '../../components/common/Modal';
 
 interface Product {
   _id: string;
@@ -24,6 +25,7 @@ export default function ProductList() {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const { data: products, isLoading } = useQuery({
     queryKey: ['products', searchTerm, page],
@@ -60,12 +62,17 @@ export default function ProductList() {
 
   const canManage = user?.role === 'Admin' || user?.role === 'Manager';
 
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    return url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+  };
+
   const columns = [
     {
       key: 'productImage',
       label: 'Image',
       render: (_: any, row: Product) => (
-        <img src={`${API_BASE_URL}${row.productImage}`} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-slate-100" />
+        <img src={getImageUrl(row.productImage)} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-slate-100" />
       ),
     },
     {
@@ -91,21 +98,28 @@ export default function ProductList() {
         </span>
       ),
     },
-    ...(canManage ? [{
+    {
       key: 'actions',
       label: 'Actions',
       align: 'right' as const,
       render: (_: any, row: Product) => (
         <div className="flex justify-end space-x-2">
-          <button className="p-1.5 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" onClick={() => navigate(`/products/edit/${row._id}`)}>
-            <Edit2 className="w-4 h-4" />
+          <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" onClick={() => setSelectedProduct(row)} title="View Details">
+            <Eye className="w-4 h-4" />
           </button>
-          <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" onClick={() => handleDelete(row._id, row.name)}>
-            <Trash2 className="w-4 h-4" />
-          </button>
+          {canManage && (
+            <>
+              <button className="p-1.5 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" onClick={() => navigate(`/products/edit/${row._id}`)} title="Edit">
+                <Edit2 className="w-4 h-4" />
+              </button>
+              <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" onClick={() => handleDelete(row._id, row.name)} title="Delete">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
       ),
-    }] : []),
+    },
   ];
 
   return (
@@ -140,6 +154,46 @@ export default function ProductList() {
         limit={10}
         onPageChange={setPage}
       />
+
+      <Modal
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        title="Product Details"
+      >
+        {selectedProduct && (
+          <div className="space-y-4">
+            <div className="flex justify-center mb-6">
+              <img src={getImageUrl(selectedProduct.productImage)} alt={selectedProduct.name} className="w-32 h-32 rounded-xl object-cover border border-slate-200 shadow-sm" />
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="block text-slate-500 mb-1">Name</span>
+                <span className="font-semibold text-slate-800">{selectedProduct.name}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">SKU</span>
+                <span className="font-semibold text-slate-800">{selectedProduct.sku}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Category</span>
+                <span className="font-semibold text-slate-800">{selectedProduct.category}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Stock Quantity</span>
+                <span className="font-semibold text-slate-800">{selectedProduct.stockQuantity}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Purchase Price</span>
+                <span className="font-semibold text-slate-800">৳{selectedProduct.purchasePrice?.toFixed(2)}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Selling Price</span>
+                <span className="font-semibold text-slate-800">৳{selectedProduct.sellingPrice?.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

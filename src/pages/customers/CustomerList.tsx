@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Eye } from 'lucide-react';
 import { useAppSelector } from '../../store/hooks';
 import toast from 'react-hot-toast';
 import api from '../../lib/api';
 import Table from '../../components/common/Table';
+import Modal from '../../components/common/Modal';
 
 export default function CustomerList() {
   const { user } = useAppSelector((state) => state.auth);
@@ -13,6 +14,7 @@ export default function CustomerList() {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   const { data: customers, isLoading } = useQuery({
     queryKey: ['customers', searchTerm, page],
@@ -58,21 +60,28 @@ export default function CustomerList() {
     { key: 'email', label: 'Email', render: (val: string) => <span className="text-slate-500">{val}</span> },
     { key: 'phone', label: 'Phone', render: (val: string) => <span className="text-slate-500">{val || '—'}</span> },
     { key: 'address', label: 'Address', render: (val: string) => <span className="text-slate-500">{val || '—'}</span> },
-    ...(canManage ? [{
+    {
       key: 'actions',
       label: 'Actions',
       align: 'right' as const,
       render: (_: any, row: any) => (
         <div className="flex justify-end space-x-2">
-          <button className="p-1.5 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" onClick={() => navigate(`/customers/edit/${row._id}`)}>
-            <Edit2 className="w-4 h-4" />
+          <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" onClick={() => setSelectedCustomer(row)} title="View Details">
+            <Eye className="w-4 h-4" />
           </button>
-          <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" onClick={() => handleDelete(row._id, row.name)}>
-            <Trash2 className="w-4 h-4" />
-          </button>
+          {canManage && (
+            <>
+              <button className="p-1.5 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" onClick={() => navigate(`/customers/edit/${row._id}`)} title="Edit">
+                <Edit2 className="w-4 h-4" />
+              </button>
+              <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" onClick={() => handleDelete(row._id, row.name)} title="Delete">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
       ),
-    }] : []),
+    },
   ];
 
   return (
@@ -107,6 +116,35 @@ export default function CustomerList() {
         limit={10}
         onPageChange={setPage}
       />
+
+      <Modal
+        isOpen={!!selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+        title="Customer Details"
+      >
+        {selectedCustomer && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="block text-slate-500 mb-1">Name</span>
+                <span className="font-semibold text-slate-800">{selectedCustomer.name}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Email</span>
+                <span className="font-semibold text-slate-800">{selectedCustomer.email}</span>
+              </div>
+              <div>
+                <span className="block text-slate-500 mb-1">Phone</span>
+                <span className="font-semibold text-slate-800">{selectedCustomer.phone || '—'}</span>
+              </div>
+              <div className="col-span-2">
+                <span className="block text-slate-500 mb-1">Address</span>
+                <span className="font-semibold text-slate-800">{selectedCustomer.address || '—'}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
